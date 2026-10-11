@@ -1,0 +1,10 @@
+{
+  "folders": [
+    {
+      "path": ".",
+    },
+  ],
+  "settings": {
+    "dbt.dbtPythonPathOverride": "F:\\Nauka\\dbt\\.venv\\Scripts\\python.exe",
+  },
+}
