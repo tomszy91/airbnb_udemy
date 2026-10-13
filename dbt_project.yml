@@ -33,3 +33,5 @@ models:
     +database: airbnb-udemy-511315
     staging:
       +materialized: view
+    intermediate:
+      +materialized: table
