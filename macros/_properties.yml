@@ -1,0 +1,11 @@
+macros:
+  - name: list_columns_with_cast
+    description: >
+      A macro that generates model basing on provided source. It puts table columns into cast function to data type provided by source
+    arguments:
+      - name: source_name
+        type: dataset
+        description: The name of the data source you want to select
+      - name: table_name
+        type: table
+        description: The name of the table you want to convert
