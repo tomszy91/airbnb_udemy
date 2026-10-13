@@ -31,5 +31,5 @@ models:
   airbnb_udemy:
     # Config indicated by + and applies to all files under models/example/
     +database: airbnb-udemy-511315
-    example:
+    staging:
       +materialized: view
