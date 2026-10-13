@@ -32,6 +32,6 @@ models:
     # Config indicated by + and applies to all files under models/example/
     +database: airbnb-udemy-511315
     staging:
-      +materialized: view
+      +materialized: ephemeral
     intermediate:
       +materialized: table
