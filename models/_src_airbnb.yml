@@ -1,0 +1,97 @@
+sources:
+  - name: airbnb_raw
+    description: >
+      Raw data collected from Airbnb.
+    database: airbnb-udemy-511315
+    schema: raw
+    tables:
+      - name: hosts
+        description: >
+          Hosts table, grain is one host per row.
+        columns:
+          - name: id
+            data_type: int64
+            description: >
+              Unique host's ID.
+          - name: name
+            data_type: string
+            description: >
+              Registered host name.
+          - name: is_superhost
+            data_type: boolean
+            description: >
+              Indicator wheter host is superhost.
+          - name: created_at
+            data_type: timestamp
+            description: >
+              Host's registration date.
+          - name: updated_at
+            data_type: timestamp
+            description: >
+              Last modification date.
+
+      - name: listings
+        description: >
+          Table containing locations available to book. One location is one row.
+        columns:
+          - name: id
+            data_type: int64
+            description: >
+              Unique ID of each listing.
+          - name: listing_url
+            data_type: string
+            description: >
+              URL link which directs to listing offer.
+          - name: name
+            data_type: string
+            description: >
+              Listing's name
+          - name: room_type
+            data_type: string
+            description: >
+              Type of listing.
+          - name: minimum_nights
+            data_type: int64
+            description: >
+              How many nights is allowed to book a listing as minimum.
+          - name: host_id
+            data_type: int64
+            description: >
+              Reference to host offering a listing.
+          - name: price
+            data_type: int64
+            description: >
+              Price per night.
+          - name: created_at
+            data_type: timestamp
+            description: >
+              Listing creation date.
+          - name: updated_at
+            data_type: timestamp
+            description: >
+              Last modification date.
+
+      - name: reviews
+        description: >
+          Table that contains listing's reviews. One review per row.
+        columns:
+          - name: listing_id
+            data_type: int64
+            description: >
+              Unique listing ID.
+          - name: date
+            data_type: timestamp
+            description: >
+              Review creation date.
+          - name: reviewer_name
+            data_type: string
+            description: >
+              Name of reviewer.
+          - name: comments
+            data_type: string
+            description: >
+              Free text containg review.
+          - name: sentiment
+            data_type: string
+            description: >
+              Detected sentiment.
