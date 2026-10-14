@@ -35,3 +35,7 @@ models:
       +materialized: ephemeral
     intermediate:
       +materialized: table
+
+seeds:
+  airbnb_udemy:
+    +database: airbnb-udemy-511315
