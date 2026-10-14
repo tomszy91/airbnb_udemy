@@ -79,6 +79,12 @@ sources:
       - name: reviews
         description: >
           Table that contains listing's reviews. One review per row.
+        config:
+            loaded_at_field: date
+            freshness:
+              warn_after:
+                count: 1
+                period: day            
         columns:
           - name: listing_id
             data_type: int64
