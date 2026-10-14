@@ -35,6 +35,8 @@ models:
       +materialized: ephemeral
     intermediate:
       +materialized: table
+    marts:
+      +materialized: table
 
 seeds:
   airbnb_udemy:
