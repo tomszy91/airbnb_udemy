@@ -16,5 +16,5 @@ where
     review_text is not null
 
 {% if is_incremental() %}
-  and review_date >= coalesce((select max(review_date) from {{ this }}), '1900-01-01')
+    and review_date >= coalesce((select max(review_date) from {{ this }}), '1900-01-01')
 {% endif %}
