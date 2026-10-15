@@ -1,6 +1,6 @@
 snapshots:
     - name: scd_raw_hosts
-      relation: source("airbnb_raw", "hosts")
+      relation: source('airbnb_raw', 'hosts')
       config:
         unique_key: id
         strategy: timestamp
