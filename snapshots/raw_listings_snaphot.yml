@@ -1,6 +1,6 @@
 snapshots:
   - name: scd_raw_listings
-    relation: source("airbnb_raw", "listings")
+    relation: source('airbnb_raw', 'listings')
     config:
       unique_key: id
       updated_at: updated_at

@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: int_airbnb__hosts_cleaned
+    config:
+      contract:
+        enforced: true
+    constraints:
+      - type: primary_key
+        columns: [host_id]
+        warn_unenforced: false
+    
+    description: >
+      Cleaned hosts table. If host name is null, then it is replaced to Anonymous. If superhost status is unknown, it is assumed that host is not a superhost. Grain is one host per row.
+    columns:
+      - name: host_id
+        data_type: int64
+        description: >
+          Unique host's ID.
+        data_tests:
+          - unique
+        constraints:
+          - type: not_null
+
+      - name: host_name
+        data_type: string
+        description: >
+          Registered host name.
+        data_tests:
+          - not_null
+
+      - name: is_superhost
+        data_type: boolean
+        description: >
+          Indicator wheter host is superhost.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [true, false]
+                quote: false
+
+      - name: created_at
+        data_type: timestamp
+        description: >
+          Host's registration date.
+
+      - name: updated_at
+        data_type: timestamp
+        description: >
+          Last modification date.
