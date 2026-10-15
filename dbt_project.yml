@@ -41,3 +41,7 @@ models:
 seeds:
   airbnb_udemy:
     +database: airbnb-udemy-511315
+
+snapshots:
+  airbnb_udemy:
+    +database: airbnb-udemy-511315
