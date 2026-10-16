@@ -9,6 +9,7 @@ with source as (
 )
 
 select
+    {{ dbt_utils.generate_surrogate_key(['listing_id', 'review_date', 'reviewer_name', 'review_text']) }} as review_id,
     *
 from
     source
