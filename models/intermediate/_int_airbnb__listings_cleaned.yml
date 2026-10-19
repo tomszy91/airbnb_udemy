@@ -3,7 +3,7 @@ version: 2
 models:
   - name: int_airbnb__listings_cleaned
     description: >
-      Cleabed table containing locations available to book. If 'minimum_nights' equals 0, then it is replaced to 1. Each row is one location.
+      Cleaned table containing locations available to book. If 'minimum_nights' equals 0, then it is replaced to 1. Each row is one location.
     data_tests:
       - minimum_row_count:
           arguments:
@@ -46,7 +46,7 @@ models:
       - name: minimum_nights
         data_type: int64
         description: >
-          How many nights is allowed to book a listing as minimum.
+          {{ doc('int_airbnb__listings_cleaned__minimum_nights') }}
         data_tests:
           - positive_values
 
