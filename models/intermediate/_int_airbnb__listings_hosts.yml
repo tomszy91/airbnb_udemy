@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: int_airbnb__listings_hosts
+    description: >
+      Table containing listings with their hostsCleaned table containing locations available to book. If 'minimum_nights' equals 0, then it is replaced to 1. Each row is one location.
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_equal_other_table:
+          arguments:
+            compare_model: source('airbnb_raw', 'listings')
+    columns:
+      - name: listing_id
+        data_type: int64
+        description: >
+          Unique ID of each listing.
+
+      - name: listing_name
+        data_type: string
+        description: >
+          Listing's name
+
+      - name: room_type
+        data_type: string
+        description: >
+          Type of listing.
+
+      - name: minimum_nights
+        data_type: int64
+        description: >
+          Minimum numer of nights required to rent this property.Keep in mind that old listings might have `minimum_nights` set to `0` in the source tables. Our cleaning algorithm updates this to `1`.
+
+      - name: price
+        data_type: int64
+        description: >
+          Price per night.
+        data_tests:
+        - dbt_expectations.expect_column_quantile_values_to_be_between:
+            arguments:
+              quantile: .99
+              min_value: 50 # (Optional)
+              max_value: 500 # (Optional)
+              strictly: false # (Optional. Default is 'false'. Adds an 'or equal to' to the comparison operator for min/max)
+        - dbt_expectations.expect_column_max_to_be_between:
+            arguments:
+              max_value: 5000 # (Optional)
+              strictly: false # (Optional. Default is 'false'. Adds an 'or equal to' to the comparison operator for min/max)
+            config:
+              severity: warn
+        - dbt_expectations.expect_column_values_to_be_of_type:
+            arguments:
+              column_type: int64
+
+      - name: host_id
+        data_type: int64
+        description: >
+          Unique host's ID.
+
+      - name: host_name
+        data_type: string
+        description: >
+          Registered host name.
+
+      - name: host_is_superhost
+        data_type: boolean
+        description: >
+          Indicator wheter host is superhost.
+
+      - name: created_at
+        data_type: timestamp
+        description: >
+          Host's registration date.
+
+      - name: updated_at
+        data_type: timestamp
+        description: >
+          Last modification date.

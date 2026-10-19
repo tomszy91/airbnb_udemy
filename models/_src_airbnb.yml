@@ -38,39 +38,62 @@ sources:
       - name: listings
         description: >
           Table containing locations available to book. One location is one row.
+            data_tests:
+        # Test defined on model level, as it must be passed as 'cast'. In my Big Query values are integers and to test by regex it must be string
+        data_tests:
+          - dbt_expectations.expect_column_values_to_match_regex:
+              arguments:
+                column_name: "cast(price as string)"
+                # Doubled slash as Big Query treats single slash as illegal
+                regex: "^\\d+$"
+                # When 'true' then it is passed as regexp_instr(cast(price as string), r'^\d+$', 1, 1
+                is_raw: True
+
         columns:
           - name: id
             data_type: int64
             description: >
               Unique ID of each listing.
+
           - name: listing_url
             data_type: string
             description: >
               URL link which directs to listing offer.
+
           - name: name
             data_type: string
             description: >
               Listing's name
+
           - name: room_type
             data_type: string
             description: >
               Type of listing.
+            data_tests:
+              - dbt_expectations.expect_column_distinct_count_to_equal:
+                  arguments:
+                    value: 4
+
           - name: minimum_nights
             data_type: int64
             description: >
               How many nights is allowed to book a listing as minimum.
+
           - name: host_id
             data_type: int64
             description: >
               Reference to host offering a listing.
+
           - name: price
             data_type: int64
             description: >
               Price per night.
+
           - name: created_at
             data_type: timestamp
             description: >
               Listing creation date.
+
           - name: updated_at
             data_type: timestamp
             description: >
@@ -80,11 +103,11 @@ sources:
         description: >
           Table that contains listing's reviews. One review per row.
         config:
-            loaded_at_field: date
-            freshness:
-              warn_after:
-                count: 1
-                period: day            
+          loaded_at_field: date
+          freshness:
+            warn_after:
+              count: 1
+              period: day
         columns:
           - name: listing_id
             data_type: int64

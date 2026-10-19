@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: mrt_airbnb__fullmoon_reviews
+    description: ""
+    columns:
+      - name: review_id
+        data_type: string
+        description: >
+          Unique ID of each review.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: listing_id
+        data_type: int64
+        description: >
+          ID of each listing.
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('int_airbnb__listings_cleaned')
+                field: listing_id
+
+
+      - name: review_date
+        data_type: timestamp
+        description: >
+          Review creation date.
+
+      - name: reviewer_name
+        data_type: string
+        description: >
+          Review author.
+
+      - name: review_text
+        data_type: string
+        description: >
+          Free text.
+
+      - name: review_sentiment
+        data_type: string
+        description: >
+          Recognized sentiment based on `review_text`.
+
+      - name: is_full_moon
+        data_type: boolean
+        description: >
+          Indicator whether review was written when a booking was during full moon.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [true, false]
+                quote: false
