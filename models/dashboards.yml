@@ -1,0 +1,18 @@
+version: 2
+
+exposures:
+  - name: executive_dashboard
+    label: Executive Dashboard
+    type: dashboard
+    maturity: low
+    url: https://there_should_be_a_link_to_pbi_service.com
+    description: Executive Dashboard about Airbnb listings and hosts
+
+    depends_on:
+      - ref('int_airbnb__hosts_cleaned')
+      - ref('int_airbnb__listings_cleaned')
+      - ref('mrt_airbnb__fullmoon_reviews')
+
+    owner:
+      name: User User
+      email: user@user.com
