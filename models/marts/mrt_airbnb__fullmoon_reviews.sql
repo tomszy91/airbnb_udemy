@@ -1,3 +1,18 @@
+{{ 
+    config(
+        materialized = 'incremental',
+        incremental_strategy = 'microbatch',
+        event_time="review_date",
+        begin="2009-06-20",
+        batch_size="year",
+        partition_by = {
+            'field': 'review_date',
+            'data_type': 'timestamp',
+            'granularity': 'year'
+        },
+        tags = ['fact']
+)}}
+
 with 
 reviews as (
     select * from {{ ref("int_airbnb__reviews_cleaned") }}
