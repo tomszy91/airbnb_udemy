@@ -9,3 +9,4 @@ reports/
 
 diag_pip_list.py
 Dockerfile
+dbt_internal_packages/
