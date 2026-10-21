@@ -9,8 +9,7 @@
             'field': 'review_date',
             'data_type': 'timestamp',
             'granularity': 'year'
-        },
-        schema='mart'
+        }
 )}}
 
 with 
