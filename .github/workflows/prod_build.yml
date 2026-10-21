@@ -57,7 +57,7 @@ jobs:
           dbt build
 
       - name: Upload prod target as artifact
-        uses: actions/upload_artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: prod-target
           path: airbnb_udemy/target
