@@ -10,7 +10,7 @@
             'data_type': 'timestamp',
             'granularity': 'year'
         },
-        tags = ['fact']
+        schema='mart'
 )}}
 
 with 
