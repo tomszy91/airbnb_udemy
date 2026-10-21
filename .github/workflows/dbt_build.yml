@@ -1,0 +1,52 @@
+name: dbt_build
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  dbt_build:
+    runs-on: ubuntu-latest
+
+    env:
+      DBT_PROFILES_DIR: ${{ github.workspace }}/ci
+      GCS_BUCKET: ${{ secrets.GCS_BUCKET }}
+      CONTAINER_IMAGE: ${{ secrets.CONTAINER_IMAGE }}
+      BQ_DATASET: ${{ secrets.BQ_DATASET }}
+      BQ_PROJECT: ${{ secrets.BQ_PROJECT }}
+
+    steps:
+      - name: repository checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: python setup
+        uses: actions/setup-python@v5.6.0
+        with:
+          python-version: "3.12"
+
+      - name: dbt install
+        run: |
+          pip install dbt-core==1.10.8 dbt-bigquery==1.10.0
+
+      - name: Write GCP credentials
+        env:
+          GCP_SA_KEY_B64: ${{ secrets.GCP_SA_KEY_B64 }}
+        run: echo "$GCP_SA_KEY_B64" | base64 -d > /tmp/gcp-key.json
+
+      - name: dbt packages install
+        run: |
+          dbt deps
+
+      - name: dbt debug
+        run: |
+          dbt debug
+
+      - name: dbt source freshness run
+        run: |
+          dbt source freshness
+        continue-on-error: true
+
+      - name: dbt build run
+        run: |
+          dbt build

@@ -1,0 +1,23 @@
+airbnb_udemy:
+  outputs:
+    prod:
+      compute_region: us-central1
+      gcs_bucket: "{{ env_var('GCS_BUCKET') }}"
+      submission_method: serverless
+      dataproc_batch:
+        runtime_config:
+          container_image: "{{ env_var('CONTAINER_IMAGE') }}"
+          properties:
+            spark.executor.instances: "2"
+            spark.executor.cores: "4"
+      dataset: "{{ env_var('BQ_DATASET') }}"
+      job_execution_timeout_seconds: 600
+      job_retries: 1
+      keyfile: /tmp/gcp-key.json
+      maximum_bytes_billed: 100000000000
+      method: service-account
+      priority: interactive
+      project: "{{ env_var('BQ_PROJECT') }}"
+      threads: 4
+      type: bigquery
+  target: prod

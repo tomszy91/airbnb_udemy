@@ -5,7 +5,7 @@ name: "airbnb_udemy"
 version: "1.0.0"
 
 # This setting configures which 'profile' dbt uses for this project.
-profile: "dbt-learn-bigquery"
+profile: "airbnb_udemy"
 
 # These configurations specify where dbt should look for different types of files.
 # The `model-paths` config, for example, states that models in this project can be
@@ -30,11 +30,10 @@ clean-targets: # directories to be removed by `dbt clean`
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.
 vars:
-  database: airbnb-udemy-511315
   user_name: default_user_name_for_project
 
 on-run-start:
-  - "create table if not exists `{{ var('database') }}.{{ target.schema }}.audit_log` (
+  - "create table if not exists `{{ target.database }}.{{ target.schema }}.audit_log` (
     model_name string,
     run_timestamp timestamp
     )"
@@ -44,9 +43,8 @@ models:
     +grants:
       roles/bigquery.dataViewer: ["specialGroup:allUsers"]
     +post-hook:
-      - "insert into `{{ var('database') }}.{{ target.schema }}.audit_log` values ('{{ this }}', current_timestamp())"
+      - "insert into `{{ target.database }}.{{ target.schema }}.audit_log` values ('{{ this }}', current_timestamp())"
     # Config indicated by + and applies to all files under models/example/
-    +database: airbnb-udemy-511315
     staging:
       # python models do not work with ephemeral
       +materialized: table
@@ -55,16 +53,3 @@ models:
     mart:
       +materialized: table
       +tags: ['fact']
-
-seeds:
-  airbnb_udemy:
-    +database: airbnb-udemy-511315
-
-snapshots:
-  airbnb_udemy:
-    +database: airbnb-udemy-511315
-
-data_tests:
-  airbnb_udemy:
-    +store_failures: true
-    +database: airbnb-udemy-511315
