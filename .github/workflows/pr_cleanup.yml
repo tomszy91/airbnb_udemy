@@ -40,16 +40,21 @@ jobs:
           GCP_SA_KEY_B64: ${{ secrets.GCP_SA_KEY_B64 }}
         run: echo "$GCP_SA_KEY_B64" | base64 -d > /tmp/gcp-key.json
 
-      - name: Set DBT_ENV_NAME from merged branch (lowercase, _ for / and -)
+      - name: Set DBT_ENV_NAME from merged branch
+        env:
+          BRANCH: ${{ github.head_ref }}
         run: |
           SANITIZED=$(echo "$BRANCH" | tr -c 'A-Za-z0-9_\n' '_' | tr '[:upper:]' '[:lower:]')
+          if [ -z "$SANITIZED" ]; then
+            echo "Empty branch name, refusing to continue"
+            exit 1
+          fi
           echo "DBT_ENV_NAME=$SANITIZED" >> "$GITHUB_ENV"
-          echo "PR will build into schema: dbt_$SANITIZED"
           echo "Will drop schemas matching prefix: dbt_$SANITIZED"
-      
+
       - name: dbt packages install
         run: |
           dbt deps
       
       - name: dbt drop schemas
-      - run: dbt run-operation drop_dev_schemas --target dev
+        run: dbt run-operation drop_dev_schemas --target dev
