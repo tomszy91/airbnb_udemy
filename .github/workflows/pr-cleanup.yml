@@ -1,0 +1,55 @@
+name: PR cleanup (drop dev schema on merge)
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  drop-dev-schema:
+    name: Drop dev schemas for merged PR
+    if: >-
+      github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    env:
+      DBT_PROFILES_DIR:     ${{ github.workspace }}/ci
+      GCS_BUCKET:           ${{ secrets.GCS_BUCKET }}
+      CONTAINER_IMAGE:      ${{ secrets.CONTAINER_IMAGE }}
+      BQ_DATASET:           ${{ secrets.BQ_DATASET }}
+      BQ_PROJECT:           ${{ secrets.BQ_PROJECT }}
+
+    steps:
+      - name: repository checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: python setup
+        uses: actions/setup-python@v5.6.0
+        with:
+          python-version: "3.12"
+
+      - name: dbt install
+        run: |
+          pip install dbt-core==1.10.8 dbt-bigquery==1.10.0
+
+      - name: Write GCP credentials
+        env:
+          GCP_SA_KEY_B64: ${{ secrets.GCP_SA_KEY_B64 }}
+        run: echo "$GCP_SA_KEY_B64" | base64 -d > /tmp/gcp-key.json
+
+      - name: Set DBT_ENV_NAME from merged branch (lowercase, _ for / and -)
+        run: |
+          SANITIZED=$(echo "$BRANCH" | tr -c 'A-Za-z0-9_\n' '_' | tr '[:upper:]' '[:lower:]')
+          echo "DBT_ENV_NAME=$SANITIZED" >> "$GITHUB_ENV"
+          echo "PR will build into schema: dbt_$SANITIZED"
+          echo "Will drop schemas matching prefix: dbt_$SANITIZED"
+      
+      - name: dbt packages install
+        run: |
+          dbt deps
+      
+      - name: dbt drop schemas
+      - run: dbt run-operation drop_dev_schemas --target dev
