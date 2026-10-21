@@ -30,7 +30,7 @@ where
         and review_date >= '{{ var("start_date") }}'
         and review_date < '{{ var("end_date") }}'
     {% else %}
-        and review_date >= coalesce((select max(review_date) from {{ this }}), '1900-01-01')
+        and review_date > coalesce((select max(review_date) from {{ this }}), '1900-01-01')
         {{ log('Loading ' ~ this ~ ' incrementally (all missing dates)', info=True) }}
     {% endif %}
 {% endif %}
