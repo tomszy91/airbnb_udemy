@@ -11,7 +11,7 @@
   {{ log(" * drop_dev_schemas: Looking for schemas with prefix:  " ~ prefix, info=True) }}
 
   {# Find all schemas matching the prefix #}
-  {% set database = var('database') %}
+  {% set database = target.database %}
   {% set results = run_query(
     "select schema_name
      from " ~ database ~ ".INFORMATION_SCHEMA.SCHEMATA
