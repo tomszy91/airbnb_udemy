@@ -42,7 +42,7 @@ jobs:
         env:
           BRANCH: ${{ github.head_ref }}
         run: |
-          SANITIZED=$(echo "$BRANCH" | tr -c 'A-Za-z0-9_\n' '_' | tr '[:lower:]' '[:lower:]')
+          SANITIZED=$(echo "$BRANCH" | tr -c 'A-Za-z0-9_\n' '_' | tr '[:upper:]' '[:lower:]')
           echo "DBT_ENV_NAME=$SANITIZED" >> "$GITHUB_ENV"
           echo "PR will build into schema: dbt_$SANITIZED"
 

@@ -10,7 +10,7 @@ airbnb_udemy:
           properties:
             spark.executor.instances: "2"
             spark.executor.cores: "4"
-      dataset: "DBT_{{ env_var('DBT_ENV_NAME') }}"
+      dataset: "dbt_{{ env_var('DBT_ENV_NAME') }}"
       job_execution_timeout_seconds: 600
       job_retries: 1
       keyfile: /tmp/gcp-key.json
