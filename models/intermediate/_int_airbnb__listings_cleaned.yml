@@ -66,6 +66,11 @@ models:
         description: >
           Price per night.
 
+      - name: price_str
+        data_type: string
+        description: >
+          Price per night with currency.
+
       - name: created_at
         data_type: timestamp
         description: >

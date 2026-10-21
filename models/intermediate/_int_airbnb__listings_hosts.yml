@@ -50,6 +50,11 @@ models:
             arguments:
               column_type: int64
 
+      - name: price_str
+        data_type: string
+        description: >
+          Price per night with currency.
+
       - name: host_id
         data_type: int64
         description: >
