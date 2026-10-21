@@ -11,8 +11,6 @@ permissions:
 jobs:
   drop-dev-schema:
     name: Drop dev schemas for merged PR
-    if: >-
-      github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     env:
