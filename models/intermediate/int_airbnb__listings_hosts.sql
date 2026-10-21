@@ -9,7 +9,7 @@ hosts as (
     select
         *
     from
-        {{ ref("int_airbnb__hosts_cleaned") }}
+        {{ ref("int_airbnb__hosts_cleaned", v=2) }}
 )
 
 select

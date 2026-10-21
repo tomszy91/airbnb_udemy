@@ -16,7 +16,9 @@ def add_sentiment_score(pandas_dataframe):
 
 
 def model(dbt, session):
-    dbt.config(materialized="table")
+    dbt.config(
+        materialized="table",
+        enabled=False)
 
     spark_dataframe = dbt.ref("stg_airbnb__reviews")
     pandas_dataframe = spark_dataframe.toPandas()

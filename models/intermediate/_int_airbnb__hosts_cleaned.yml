@@ -2,14 +2,36 @@ version: 2
 
 models:
   - name: int_airbnb__hosts_cleaned
+    latest_version: 2
     config:
       contract:
         enforced: true
+      latest_version_pointer:
+        enabled: true
+        
     constraints:
       - type: primary_key
         columns: [host_id]
         warn_unenforced: false
     
+    versions:
+      - v: 1
+        defined_in: int_airbnb__hosts_cleaned
+        deprecation_date: 2026-10-21
+      - v: 2
+        columns:
+          - include: '*'
+            exclude: [host_name]
+          - name: host_name
+            data_type: string
+            description: >
+              Registered host name. N/A if not available.
+            data_tests:
+              - not_null
+            constraints:
+              - type: not_null
+    
+
     description: >
       Cleaned hosts table. If host name is null, then it is replaced to Anonymous. If superhost status is unknown, it is assumed that host is not a superhost. Grain is one host per row.
     columns:

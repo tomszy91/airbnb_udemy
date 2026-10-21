@@ -2,6 +2,9 @@ from pyspark.sql import functions as F
 
 
 def model(dbt, session):
+    dbt.config(
+        enabled=False)
+    
     spark_dataframe = dbt.ref("int_airbnb__listings_cleaned")
 
     spark_dataframe = (

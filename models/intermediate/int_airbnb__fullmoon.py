@@ -19,7 +19,9 @@ def add_holiday_flag(pandas_dataframe):
 
 
 def model(dbt, session):
-    dbt.config(materialized="table")
+    dbt.config(
+        materialized="table",
+        enabled=False)
 
     spark_dataframe = dbt.ref("seed_full_moon_dates")
     pandas_dataframe = spark_dataframe.toPandas()
