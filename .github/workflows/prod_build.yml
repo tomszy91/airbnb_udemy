@@ -1,20 +1,25 @@
-name: dbt_build
+name: Prod deploy (on merge to main / manual)
+
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
-  dbt_build:
+  build:
+    name: Production deps and build
     runs-on: ubuntu-latest
 
     env:
-      DBT_PROFILES_DIR: ${{ github.workspace }}/ci
-      GCS_BUCKET: ${{ secrets.GCS_BUCKET }}
-      CONTAINER_IMAGE: ${{ secrets.CONTAINER_IMAGE }}
-      BQ_DATASET: ${{ secrets.BQ_DATASET }}
-      BQ_PROJECT: ${{ secrets.BQ_PROJECT }}
+      DBT_PROFILES_DIR:     ${{ github.workspace }}/ci
+      GCS_BUCKET:           ${{ secrets.GCS_BUCKET }}
+      CONTAINER_IMAGE:      ${{ secrets.CONTAINER_IMAGE }}
+      BQ_DATASET:           ${{ secrets.BQ_DATASET }}
+      BQ_PROJECT:           ${{ secrets.BQ_PROJECT }}
 
     steps:
       - name: repository checkout
@@ -50,3 +55,10 @@ jobs:
       - name: dbt build run
         run: |
           dbt build
+
+      - name: Upload prod target as artifact
+        uses: actions/upload_artifact@v4
+        with:
+          name: prod-target
+          path: airbnb_udemy/target
+          retention-days: 90
