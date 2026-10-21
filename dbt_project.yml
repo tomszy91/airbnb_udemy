@@ -51,5 +51,6 @@ models:
     intermediate:
       +materialized: table
     mart:
+      +schema: mart
       +materialized: table
       +tags: ['fact']
