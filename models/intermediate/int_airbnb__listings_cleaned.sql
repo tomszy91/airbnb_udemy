@@ -22,6 +22,7 @@ cleaned as (
         end as minimum_nights,
         host_id,
         price,
+        price_str,
         created_at,
         updated_at
     from
