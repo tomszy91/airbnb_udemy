@@ -31,7 +31,7 @@ The project simulates an analytics engineering workflow for short-term rental ma
 | `raw_reviews` | Parquet / Table | User review text, ratings, and timestamps |
 | `seed_full_moon_dates` | CSV Seed | Historical full moon calendar dates for lunar correlation analysis |
 
-![Lineage](assets/input_schema.png)
+![Input schema](assets/input_schema.png)
 
 ---
 
@@ -66,6 +66,9 @@ macros/
 tests/
   assure_consistent_created_at.sql            -- validation on timestamp consistency
   assure_minimum_nights.sql                   -- boundary check for minimum stay rules
+
+reports/
+  dashboard.pbix                              -- PBI report - not tracked in Git
 
 .github/
   workflows/
